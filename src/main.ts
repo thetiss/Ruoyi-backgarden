@@ -4,6 +4,8 @@ import Element from 'element-ui';
 import './assets/styles/element-variables.scss';
 import FormWizard from "vue-form-wizard";
 import "vue-form-wizard/dist/vue-form-wizard.min.css";
+import "vue-form-wizard/dist/themify-icons.css";
+import "vue-form-wizard/dist/all.css";
 import App from './App.vue';
 import router from './router';
 import store from './store';

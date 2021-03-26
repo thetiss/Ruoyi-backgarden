@@ -11,11 +11,11 @@
         backButtonText="上一步"
         finishButtonText="完成"
     >
-            <tab-content title="企业基本信息"
+            <tab-content title="企业基本信息" icon="ti-user"
                 :before-change="() => validate('firstStep')">
                 <enterprise-base-info ref="firstStep" @on-validate='onStepValidate'></enterprise-base-info>
             </tab-content>
-            <tab-content title="企业经营状况"
+            <tab-content title="企业经营状况" icon="fas fa-map-marker-alt"
                 :before-change="() => validate('secondStep')">
                 <enterprise-management ref="secondStep" @on-validate='onStepValidate'></enterprise-management>
             </tab-content>
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+// import { FormWizard, TabContent } from 'vue-form-wizard';
+// import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 import EnterpriseBaseInfo from './components/EnterpriseBaseInfo.vue';
 import EnterpriseManagement from './components/EnterpriseManagement.vue';
 import EnterprisePartner from './components/EnterprisePartner.vue';
@@ -37,6 +39,8 @@ export default {
     EnterpriseBaseInfo,
     EnterpriseManagement,
     EnterprisePartner
+    // FormWizard,
+    // TabContent
   },
   data() {
     return {
