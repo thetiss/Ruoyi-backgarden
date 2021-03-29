@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
 import EnterpriseApproval from "../views/EnterpriseApproval/index.vue";
 import EnterpriseApprovalForm from '../views/EnterpriseApprovalForm/index.vue';
+import TestTable from '../views/EnterpriseApprovalForm/components/ProductReportsListTable.vue';
 
 Vue.use(VueRouter);
 
@@ -29,6 +30,11 @@ const routes: Array<RouteConfig> = [
     path: '/EnterpriseApprovalForm',
     name: 'EnterpriseApprovalForm',
     component: EnterpriseApprovalForm
+  },
+  {
+    path: '/TestTable',
+    name: 'TestTable',
+    component: TestTable
   }
 ];
 

@@ -1,3 +1,7 @@
+/* TODO icon相关优化
+1 fas icon没有成功实现；https://github.com/BinarCode/vue-form-wizard/issues/255
+2 ti icon在tab-content中有竖线；要调整样式；
+*/
 <template>
   <div id="app">
     <form-wizard @on-complete="onComplete"
@@ -15,11 +19,11 @@
                 :before-change="() => validate('firstStep')">
                 <enterprise-base-info ref="firstStep" @on-validate='onStepValidate'></enterprise-base-info>
             </tab-content>
-            <tab-content title="企业经营状况" icon="fas fa-map-marker-alt"
+            <tab-content title="企业经营状况" icon="ti-money"
                 :before-change="() => validate('secondStep')">
                 <enterprise-management ref="secondStep" @on-validate='onStepValidate'></enterprise-management>
             </tab-content>
-            <tab-content title="企业用户信息"
+            <tab-content title="企业用户信息" icon="ti-link"
                 :before-change="() => validate('thirdStep')">
                 <enterprise-partner ref="thirdStep" @on-validate='onStepValidate'></enterprise-partner>
             </tab-content>
@@ -28,8 +32,6 @@
 </template>
 
 <script>
-// import { FormWizard, TabContent } from 'vue-form-wizard';
-// import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 import EnterpriseBaseInfo from './components/EnterpriseBaseInfo.vue';
 import EnterpriseManagement from './components/EnterpriseManagement.vue';
 import EnterprisePartner from './components/EnterprisePartner.vue';
