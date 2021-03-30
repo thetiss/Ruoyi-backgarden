@@ -1,75 +1,79 @@
 <template>
   <div class="app-container">
-    <el-card class="box-card" shadow="never">
-      <div slot="header" class="card-title">
-        <span>已经上传的产品检测报告</span>
-      </div>
-      <el-table
-        :data="menuList"
-        row-key="id"
-        stripe="true"
-        :default-sort = "{prop: 'create_time', order: 'descending'}"
-        @selection-change="handleSelectionChange"
-      >
-        <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column prop="id" label="序号" :show-overflow-tooltip="true" width="160"></el-table-column>
-        <el-table-column prop="name" label="报告名称"></el-table-column>
-        <el-table-column prop="create_time" label="上传时间" sortable :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="email" label="产品名称" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="status" label="产品类型" :formatter="statusFormat" width="80"></el-table-column>
-        <el-table-column prop="id" label="产品编号" :show-overflow-tooltip="true">
-          <template slot-scope="scope">
-              <el-popover trigger="hover" placement="top">
-                <p>姓名: {{ scope.row.id }}</p>
-                <p>住址: {{ scope.row.name }}</p>
-                <div slot="reference" class="name-wrapper">
-                  <el-tag size="medium">{{ scope.row.id }}</el-tag>
-                </div>
-              </el-popover>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-card>
+    <el-dialog title="产品检测报告上传" :modal="false" :visible.sync="isDialogTableVisible" :before-close="handleClose">
+      <!-- 产品报告列表Table -->
+      <el-card class="box-card" shadow="never">
+        <div slot="header" class="card-title">
+          <span>已经上传的产品检测报告</span>
+        </div>
+        <el-table
+          :data="menuList"
+          row-key="id"
+          stripe
+          :default-sort = "{prop: 'create_time', order: 'descending'}"
+          @selection-change="handleSelectionChange"
+        >
+          <el-table-column type="selection" width="55"> </el-table-column>
+          <el-table-column prop="id" label="序号" :show-overflow-tooltip="true" width="160"></el-table-column>
+          <el-table-column prop="name" label="报告名称"></el-table-column>
+          <el-table-column prop="create_time" label="上传时间" sortable :show-overflow-tooltip="true"></el-table-column>
+          <el-table-column prop="email" label="产品名称" :show-overflow-tooltip="true"></el-table-column>
+          <el-table-column prop="status" label="产品类型" width="80"></el-table-column>
+          <!-- <el-table-column prop="status" label="产品类型" :formatter="statusFormat" width="80"></el-table-column> -->
+          <el-table-column prop="id" label="产品编号" :show-overflow-tooltip="true">
+            <template slot-scope="scope">
+                <el-popover trigger="hover" placement="top">
+                  <p>姓名: {{ scope.row.id }}</p>
+                  <p>住址: {{ scope.row.name }}</p>
+                  <div slot="reference" class="name-wrapper">
+                    <el-tag size="medium">{{ scope.row.id }}</el-tag>
+                  </div>
+                </el-popover>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-card>
 
-    <!-- 产品报告上传Form -->
-    <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="180px"
-      label-position="right">
-      <el-row type="flex" justify="start" align="right" :gutter="1" style="margin-left: 20%">
-        <el-form-item label="产品类型" prop="productType">
-          <el-input v-model="formData.field105" placeholder="请输入产品类型" clearable :style="{width: '100%'}">
-          </el-input>
+      <!-- 产品报告上传Form -->
+      <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="180px"
+        label-position="right">
+        <el-row type="flex" justify="start" align="right" :gutter="1" style="margin-left: 20%">
+          <el-form-item label="产品类型" prop="productType">
+            <el-input v-model="formData.field105" placeholder="请输入产品类型" clearable :style="{width: '100%'}">
+            </el-input>
+          </el-form-item>
+          <el-form-item label="产品编号" prop="productNo">
+            <el-input v-model="formData.field107" placeholder="请输入产品编号" clearable :style="{width: '100%'}">
+            </el-input>
+          </el-form-item>
+        </el-row>
+        <el-row type="flex" justify="start" align="left" :gutter="1" style="margin-left: 20%">
+          <el-form-item label="产品名称" prop="productName">
+            <el-input v-model="formData.field109" placeholder="请输入产品名称" clearable :style="{width: '100%'}">
+            </el-input>
+          </el-form-item>
+          <el-form-item label="产品检测报告" prop="productReport" required >
+            <el-upload
+              class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :before-remove="beforeRemove"
+              multiple
+              :limit="3"
+              :on-exceed="handleExceed"
+              :file-list="fileList" >
+              <el-button size="small" type="success" plain icon="el-icon-document-add" style="margin-left: -100%">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
+          </el-form-item>
+        </el-row>
+        <el-form-item size="large">
+          <el-button type="primary" @click="submitForm" icon="el-icon-upload2">上传</el-button>
+          <el-button type="danger" :disabled='isDisableDeleteReportBtn' @click="resetForm" icon="el-icon-delete">删除</el-button>
         </el-form-item>
-        <el-form-item label="产品编号" prop="productNo">
-          <el-input v-model="formData.field107" placeholder="请输入产品编号" clearable :style="{width: '100%'}">
-          </el-input>
-        </el-form-item>
-      </el-row>
-      <el-row type="flex" justify="start" align="left" :gutter="1" style="margin-left: 20%">
-        <el-form-item label="产品名称" prop="productName">
-          <el-input v-model="formData.field109" placeholder="请输入产品名称" clearable :style="{width: '100%'}">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="产品检测报告" prop="productReport" required >
-          <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            multiple
-            :limit="3"
-            :on-exceed="handleExceed"
-            :file-list="fileList" >
-            <el-button size="small" type="success" icon="el-icon-document-add" style="margin-left: -100%">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-          </el-upload>
-        </el-form-item>
-      </el-row>
-      <el-form-item size="large">
-        <el-button type="primary" @click="submitForm" icon="el-icon-upload2">上传</el-button>
-        <el-button type="danger" :disabled='isDisableDeleteReportBtn' @click="resetForm" icon="el-icon-delete">删除</el-button>
-      </el-form-item>
-    </el-form>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -80,11 +84,12 @@ export default {
   name: "Menu",
   data() {
     return {
+      isDialogTableVisible: false,
       isDisableDeleteReportBtn: true,
       multipleSelection: [],
       formData: {
         productType: undefined,
-        field107: undefined,
+        productNo: undefined,
         productName: undefined,
         productReport: null
       },
@@ -134,6 +139,10 @@ export default {
   },
   created() {
     this.getUserList();
+    // eslint-disable-next-line func-names
+    this.$on('open', function () {
+      this.isDialogTableVisible = true;
+    });
     // this.getList();
     // this.getDicts("sys_show_hide").then((response) => {
     //   this.visibleOptions = response.data;
@@ -143,6 +152,17 @@ export default {
     // });
   },
   methods: {
+    handleClose(done) {
+      // this.isDialogTableVisible = true;
+      this.$confirm('确认关闭？')
+        .then((_) => {
+          done();
+          // this.$emit('update:dialogVisible', false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
       this.isDisableDeleteReportBtn = false;

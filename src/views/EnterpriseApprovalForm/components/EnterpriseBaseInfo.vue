@@ -24,6 +24,13 @@
         <el-row type="flex" justify="start" align="top" :gutter="10">
             <el-form-item label="注册地址" prop="registeredAddress" label-width='140px'>
                 <el-input v-model="formData.registeredAddress" placeholder="请输入注册地址" clearable :style="{width: '100%'}">
+                  <i
+                    class="el-icon-map-location"
+                    slot="suffix"
+                    @click="handleIconClick"
+                    style="color: red"
+                  >
+                  </i>
                 </el-input>
             </el-form-item>
             <el-form-item label="企业法人" prop="enterpriseCorporation" label-width='140px'>
@@ -87,7 +94,7 @@ export default {
       },
       rules: {
         enterpriseName: [{
-          required: true,
+          required: false,
           message: '请输入企业名称',
           trigger: 'blur'
         }],
@@ -169,6 +176,9 @@ export default {
     },
     resetForm() {
       this.$refs.elForm.resetFields();
+    },
+    handleIconClick() {
+      alert('Open a map');
     }
   }
 };

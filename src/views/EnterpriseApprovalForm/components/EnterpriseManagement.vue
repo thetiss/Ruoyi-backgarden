@@ -33,21 +33,24 @@
         <el-row type="flex" justify="start" align="top" :gutter="10">
           <el-form-item prop="reportUpload" label-width='140px'>
             <span slot="label">产品检测报告上传</span>
-            <el-upload ref="reportUpload" :file-list="reportUploadfileList" :action="reportUploadAction"
-              :before-upload="reportUploadBeforeUpload">
-              <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
-            </el-upload>
+              <el-button size="small" type="success" plain icon="el-icon-document-add" @click="handleProductReportUpload">点击上传</el-button>
           </el-form-item>
         </el-row>
      </el-form>
+     <product-reports-list-table ref="form"></product-reports-list-table>
   </div>
 </template>
 <script>
+import ProductReportsListTable from './ProductReportsListTable.vue';
+
 export default {
-  components: {},
+  components: {
+    ProductReportsListTable
+  },
   props: [],
   data() {
     return {
+      productReportUploadModalVisible: false,
       labelPosition: 'right',
       formData: {
         enterpriseScale: 1,
@@ -58,14 +61,14 @@ export default {
       },
       rules: {
         enterpriseScale: [{
-          required: true,
+          required: false,
           message: '企业规模不能为空',
           trigger: 'change'
         }],
         createdTime: [],
         registeredCapital: [],
         businessScope: [{
-          required: true,
+          required: false,
           message: '请输入经营范围',
           trigger: 'blur'
         }]
@@ -108,12 +111,8 @@ export default {
     resetForm() {
       this.$refs.elForm.resetFields();
     },
-    reportUploadBeforeUpload(file) {
-      const isRightSize = file.size / 1024 / 1024 < 2;
-      if (!isRightSize) {
-        this.$message.error('文件大小超过 2MB');
-      }
-      return isRightSize;
+    handleProductReportUpload() {
+      this.$refs.form.$emit("open");
     }
   }
 };

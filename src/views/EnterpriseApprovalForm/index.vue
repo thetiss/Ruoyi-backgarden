@@ -41,8 +41,6 @@ export default {
     EnterpriseBaseInfo,
     EnterpriseManagement,
     EnterprisePartner
-    // FormWizard,
-    // TabContent
   },
   data() {
     return {
@@ -63,6 +61,8 @@ export default {
     onStepValidate(valid, stepFormData) {
       if (valid) {
         this.combinedFormData = { ...this.combinedFormData, ...stepFormData };
+        console.log('onStepValidate', valid);
+        // debugger;
       }
     }
   }
