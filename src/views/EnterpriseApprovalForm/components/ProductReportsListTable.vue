@@ -19,7 +19,6 @@
         <el-table-column prop="status" label="产品类型" :formatter="statusFormat" width="80"></el-table-column>
         <el-table-column prop="id" label="产品编号" :show-overflow-tooltip="true">
           <template slot-scope="scope">
-            <!-- <i class="el-icon-time"></i> -->
               <el-popover trigger="hover" placement="top">
                 <p>姓名: {{ scope.row.id }}</p>
                 <p>住址: {{ scope.row.name }}</p>
@@ -50,10 +49,19 @@
           <el-input v-model="formData.field109" placeholder="请输入产品名称" clearable :style="{width: '100%'}">
           </el-input>
         </el-form-item>
-        <el-form-item label="产品检测报告" prop="productReport" required>
-          <el-upload ref="field114" :file-list="field114fileList" :action="field114Action"
-            :before-upload="field114BeforeUpload" list-type="picture-card">
-            <i class="el-icon-plus"></i>
+        <el-form-item label="产品检测报告" prop="productReport" required >
+          <el-upload
+            class="upload-demo"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            multiple
+            :limit="3"
+            :on-exceed="handleExceed"
+            :file-list="fileList" >
+            <el-button size="small" type="success" icon="el-icon-document-add" style="margin-left: -100%">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
           </el-upload>
         </el-form-item>
       </el-row>
@@ -70,7 +78,6 @@ import { listUsers } from '@/api/enterprise/report';
 
 export default {
   name: "Menu",
-  //   components: { Treeselect, IconSelect },
   data() {
     return {
       isDisableDeleteReportBtn: true,
@@ -81,6 +88,7 @@ export default {
         productName: undefined,
         productReport: null
       },
+      fileList: [],
       // 遮罩层
       loading: true,
       // 显示搜索条件
@@ -151,12 +159,17 @@ export default {
     resetForm() {
       this.$refs.elForm.resetFields();
     },
-    productReportBeforeUpload(file) {
-      const isRightSize = file.size / 1024 / 1024 < 2;
-      if (!isRightSize) {
-        this.$message.error('文件大小超过 2MB');
-      }
-      return isRightSize;
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 $ { file.name }？`);
     },
     // 选择图标
     selected(name) {
@@ -251,17 +264,10 @@ export default {
 
 </script>
 <style>
-.el-upload__tip {
-  line-height: 1.2;
-}
 
 .card-title {
     text-align: left;
     font-weight: bold;
 }
-/* .el-form-item-row {
-    line-height: 40px;
-    position: relative;
-    font-size: 14px;
-} */
+
 </style>
