@@ -162,6 +162,7 @@ export default {
     validate() {
       return new Promise((resolve, reject) => {
         this.$refs.form.validate((valid) => {
+          console.log('Promise', valid);
           this.$emit('on-validate', valid, this.formData);
           resolve(valid);
         });

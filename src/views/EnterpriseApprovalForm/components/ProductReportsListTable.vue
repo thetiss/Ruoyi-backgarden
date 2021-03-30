@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-dialog title="产品检测报告上传" :modal="false" :visible.sync="isDialogTableVisible" :before-close="handleClose">
+    <el-dialog title="产品检测报告上传" :modal="false" :visible.sync="isDialogTableVisible" :before-close="handleClose" >
       <!-- 产品报告列表Table -->
       <el-card class="box-card" shadow="never">
         <div slot="header" class="card-title">
@@ -52,7 +52,7 @@
             <el-input v-model="formData.field109" placeholder="请输入产品名称" clearable :style="{width: '100%'}">
             </el-input>
           </el-form-item>
-          <el-form-item label="产品检测报告" prop="productReport" required >
+          <el-form-item label="产品检测报告" prop="productReport">
             <el-upload
               class="upload-demo"
               action="https://jsonplaceholder.typicode.com/posts/"
@@ -120,17 +120,17 @@ export default {
       // 表单校验
       rules: {
         productType: [{
-          required: true,
+          required: false,
           message: '请输入产品类型',
           trigger: 'blur'
         }],
         productNo: [{
-          required: true,
+          required: false,
           message: '请输入产品编号',
           trigger: 'blur'
         }],
         productName: [{
-          required: true,
+          required: false,
           message: '请输入产品名称',
           trigger: 'blur'
         }]

@@ -1,6 +1,6 @@
 <template>
   <div>
-      <el-form :model="formData" :rules="rules" ref="form" :label-position="labelPosition" label-width="80px">
+      <el-form :model="formData"  :rules="rules" ref="form" :label-position="labelPosition" label-width="80px">
         <el-row type="flex" justify="middle" align="top" :gutter="10">
           <el-form-item prop="enterpriseScale" label-width='140px'>
             <span slot="label">企业规模</span>
@@ -36,8 +36,8 @@
               <el-button size="small" type="success" plain icon="el-icon-document-add" @click="handleProductReportUpload">点击上传</el-button>
           </el-form-item>
         </el-row>
+        <product-reports-list-table ref="form"></product-reports-list-table>
      </el-form>
-     <product-reports-list-table ref="form"></product-reports-list-table>
   </div>
 </template>
 <script>
@@ -61,20 +61,18 @@ export default {
       },
       rules: {
         enterpriseScale: [{
-          required: false,
+          required: true,
           message: '企业规模不能为空',
           trigger: 'change'
         }],
-        createdTime: [],
-        registeredCapital: [],
+        // createdTime: [],
+        // registeredCapital: [],
         businessScope: [{
           required: false,
           message: '请输入经营范围',
           trigger: 'blur'
         }]
       },
-      reportUploadAction: 'https://jsonplaceholder.typicode.com/posts/',
-      reportUploadfileList: [],
       enterpriseScaleEnum: [{
         "label": "大型企业",
         "value": 1

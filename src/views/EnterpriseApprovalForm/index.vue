@@ -56,6 +56,7 @@ export default {
       alert('Yep, Well Done');
     },
     validate(ref) {
+      console.log('validate', ref);
       return this.$refs[ref].validate();
     },
     onStepValidate(valid, stepFormData) {
