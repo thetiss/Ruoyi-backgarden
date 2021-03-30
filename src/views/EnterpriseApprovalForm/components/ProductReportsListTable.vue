@@ -1,200 +1,71 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch">
-      <el-form-item label="菜单名称" prop="menuName">
-        <el-input
-          v-model="queryParams.menuName"
-          placeholder="请输入菜单名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="菜单状态" clearable size="small">
-          <el-option
-            v-for="dict in statusOptions"
-            :key="dict.dictValue"
-            :label="dict.dictLabel"
-            :value="dict.dictValue"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+    <el-card class="box-card" shadow="never">
+      <div slot="header" class="card-title">
+        <span>已经上传的产品检测报告</span>
+      </div>
+      <el-table
+        :data="menuList"
+        row-key="id"
+        stripe="true"
+        :default-sort = "{prop: 'create_time', order: 'descending'}"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="55"> </el-table-column>
+        <el-table-column prop="id" label="序号" :show-overflow-tooltip="true" width="160"></el-table-column>
+        <el-table-column prop="name" label="报告名称"></el-table-column>
+        <el-table-column prop="create_time" label="上传时间" sortable :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="email" label="产品名称" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column prop="status" label="产品类型" :formatter="statusFormat" width="80"></el-table-column>
+        <el-table-column prop="id" label="产品编号" :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            <!-- <i class="el-icon-time"></i> -->
+              <el-popover trigger="hover" placement="top">
+                <p>姓名: {{ scope.row.id }}</p>
+                <p>住址: {{ scope.row.name }}</p>
+                <div slot="reference" class="name-wrapper">
+                  <el-tag size="medium">{{ scope.row.id }}</el-tag>
+                </div>
+              </el-popover>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+
+    <!-- 产品报告上传Form -->
+    <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="180px"
+      label-position="right">
+      <el-row type="flex" justify="start" align="right" :gutter="1" style="margin-left: 20%">
+        <el-form-item label="产品类型" prop="productType">
+          <el-input v-model="formData.field105" placeholder="请输入产品类型" clearable :style="{width: '100%'}">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="产品编号" prop="productNo">
+          <el-input v-model="formData.field107" placeholder="请输入产品编号" clearable :style="{width: '100%'}">
+          </el-input>
+        </el-form-item>
+      </el-row>
+      <el-row type="flex" justify="start" align="left" :gutter="1" style="margin-left: 20%">
+        <el-form-item label="产品名称" prop="productName">
+          <el-input v-model="formData.field109" placeholder="请输入产品名称" clearable :style="{width: '100%'}">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="产品检测报告" prop="productReport" required>
+          <el-upload ref="field114" :file-list="field114fileList" :action="field114Action"
+            :before-upload="field114BeforeUpload" list-type="picture-card">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+        </el-form-item>
+      </el-row>
+      <el-form-item size="large">
+        <el-button type="primary" @click="submitForm" icon="el-icon-upload2">上传</el-button>
+        <el-button type="danger" :disabled='isDisableDeleteReportBtn' @click="resetForm" icon="el-icon-delete">删除</el-button>
       </el-form-item>
     </el-form>
-
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-        >新增</el-button>
-      </el-col>
-      <!-- <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
-    </el-row>
-
-    <el-table
-      :data="menuList"
-      row-key="id"
-    >
-      <el-table-column prop="id" label="菜单ID" :show-overflow-tooltip="true" width="160"></el-table-column>
-      <el-table-column prop="name" label="菜单名称"></el-table-column>
-      <el-table-column prop="email" label="邮箱" :show-overflow-tooltip="true"></el-table-column>
-      <el-table-column prop="create_time" label="创建时间" :show-overflow-tooltip="true"></el-table-column>
-      <el-table-column prop="status" label="状态" :formatter="statusFormat" width="80"></el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template>
-          <el-button size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="alert('update')"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-plus"
-            @click="alert('add')"
-          >新增</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="alert('del')"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <!-- 添加或修改菜单对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="上级菜单">
-              <treeselect
-                v-model="form.parentId"
-                :options="menuOptions"
-                :normalizer="normalizer"
-                :show-count="true"
-                placeholder="选择上级菜单"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="菜单类型" prop="menuType">
-              <el-radio-group v-model="form.menuType">
-                <el-radio label="M">目录</el-radio>
-                <el-radio label="C">菜单</el-radio>
-                <el-radio label="F">按钮</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item v-if="form.menuType != 'F'" label="菜单图标">
-              <el-popover
-                placement="bottom-start"
-                width="460"
-                trigger="click"
-                @show="$refs['iconSelect'].reset()"
-              >
-                <IconSelect ref="iconSelect" @selected="selected" />
-                <el-input slot="reference" v-model="form.icon" placeholder="点击选择图标" readonly>
-                  <svg-icon
-                    v-if="form.icon"
-                    slot="prefix"
-                    :icon-class="form.icon"
-                    class="el-input__icon"
-                    style="height: 32px;width: 16px;"
-                  />
-                  <i v-else slot="prefix" class="el-icon-search el-input__icon" />
-                </el-input>
-              </el-popover>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="菜单名称" prop="menuName">
-              <el-input v-model="form.menuName" placeholder="请输入菜单名称" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="显示排序" prop="orderNum">
-              <el-input-number v-model="form.orderNum" controls-position="right" :min="0" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item v-if="form.menuType != 'F'" label="是否外链">
-              <el-radio-group v-model="form.isFrame">
-                <el-radio label="0">是</el-radio>
-                <el-radio label="1">否</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item v-if="form.menuType != 'F'" label="路由地址" prop="path">
-              <el-input v-model="form.path" placeholder="请输入路由地址" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="form.menuType == 'C'">
-            <el-form-item label="组件路径" prop="component">
-              <el-input v-model="form.component" placeholder="请输入组件路径" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item v-if="form.menuType != 'M'" label="权限标识">
-              <el-input v-model="form.perms" placeholder="请权限标识" maxlength="50" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item v-if="form.menuType != 'F'" label="显示状态">
-              <el-radio-group v-model="form.visible">
-                <el-radio
-                  v-for="dict in visibleOptions"
-                  :key="dict.dictValue"
-                  :label="dict.dictValue"
-                >{{dict.dictLabel}}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item v-if="form.menuType != 'F'" label="菜单状态">
-              <el-radio-group v-model="form.status">
-                <el-radio
-                  v-for="dict in statusOptions"
-                  :key="dict.dictValue"
-                  :label="dict.dictValue"
-                >{{dict.dictLabel}}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item v-if="form.menuType == 'C'" label="是否缓存">
-              <el-radio-group v-model="form.isCache">
-                <el-radio label="0">缓存</el-radio>
-                <el-radio label="1">不缓存</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <!-- <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button> -->
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-// import { listMenu, getMenu, delMenu, addMenu, updateMenu } from "@/api/system/menu";
-// import Treeselect from "@riophae/vue-treeselect";
-// import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-// import IconSelect from "@/components/IconSelect";
 import { listUsers } from '@/api/enterprise/report';
 
 export default {
@@ -202,6 +73,14 @@ export default {
   //   components: { Treeselect, IconSelect },
   data() {
     return {
+      isDisableDeleteReportBtn: true,
+      multipleSelection: [],
+      formData: {
+        productType: undefined,
+        field107: undefined,
+        productName: undefined,
+        productReport: null
+      },
       // 遮罩层
       loading: true,
       // 显示搜索条件
@@ -227,15 +106,21 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        menuName: [
-          { required: true, message: "菜单名称不能为空", trigger: "blur" }
-        ],
-        orderNum: [
-          { required: true, message: "菜单顺序不能为空", trigger: "blur" }
-        ],
-        path: [
-          { required: true, message: "路由地址不能为空", trigger: "blur" }
-        ]
+        productType: [{
+          required: true,
+          message: '请输入产品类型',
+          trigger: 'blur'
+        }],
+        productNo: [{
+          required: true,
+          message: '请输入产品编号',
+          trigger: 'blur'
+        }],
+        productName: [{
+          required: true,
+          message: '请输入产品名称',
+          trigger: 'blur'
+        }]
       }
     };
   },
@@ -250,6 +135,29 @@ export default {
     // });
   },
   methods: {
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+      this.isDisableDeleteReportBtn = false;
+      // debugger;
+    },
+    submitForm() {
+      this.$refs.elForm.validate((valid) => {
+        // if (!valid) { return 'a'; }
+        const testInfo = 'h';
+        return testInfo;
+        // TODO 提交表单
+      });
+    },
+    resetForm() {
+      this.$refs.elForm.resetFields();
+    },
+    productReportBeforeUpload(file) {
+      const isRightSize = file.size / 1024 / 1024 < 2;
+      if (!isRightSize) {
+        this.$message.error('文件大小超过 2MB');
+      }
+      return isRightSize;
+    },
     // 选择图标
     selected(name) {
       this.form.icon = name;
@@ -342,3 +250,18 @@ export default {
 };
 
 </script>
+<style>
+.el-upload__tip {
+  line-height: 1.2;
+}
+
+.card-title {
+    text-align: left;
+    font-weight: bold;
+}
+/* .el-form-item-row {
+    line-height: 40px;
+    position: relative;
+    font-size: 14px;
+} */
+</style>
