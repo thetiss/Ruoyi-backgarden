@@ -3,7 +3,7 @@
       <el-form :model="formData"  :rules="rules" ref="form" :label-position="labelPosition" label-width="80px">
         <el-row type="flex" justify="middle" align="top" :gutter="10">
           <el-form-item prop="enterpriseScale" label-width='140px'>
-            <span slot="label">企业规模</span>
+            <span slot="label" class="input-label">企业规模</span>
             <el-radio-group v-model="formData.enterpriseScale" size="medium">
               <el-radio v-for="(item, index) in enterpriseScaleEnum" :key="index" :label="item.value"
                 :disabled="item.disabled">{{item.label}}</el-radio>
@@ -12,27 +12,27 @@
         </el-row>
         <el-row type="flex" justify="start" align="top" :gutter="10">
           <el-form-item prop="createdTime" label-width='140px'>
-            <span slot="label">成立时间</span>
+            <span slot="label" class="input-label">成立时间</span>
             <el-date-picker v-model="formData.createdTime" format="yyyy-MM-dd" value-format="yyyy-MM-dd"
               :style="{width: '100%'}" placeholder="请选择成立时间" clearable>
             </el-date-picker>
           </el-form-item>
           <el-form-item prop="registeredCapital" label-width='140px'>
-            <span slot="label">注册资金</span>
+            <span slot="label" class="input-label">注册资金</span>
             <el-input v-model="formData.registeredCapital" placeholder="请输入注册资金" clearable :style="{width: '100%'}">
             </el-input>
           </el-form-item>
         </el-row>
         <el-row type="flex" justify="start" align="top" :gutter="10">
           <el-form-item prop="businessScope" label-width='140px'>
-            <span slot="label">经营范围</span>
+            <span slot="label" class="input-label">经营范围</span>
             <el-input v-model="formData.businessScope" placeholder="请输入经营范围" clearable :style="{width: '100%'}">
             </el-input>
           </el-form-item>
         </el-row>
         <el-row type="flex" justify="start" align="top" :gutter="10">
           <el-form-item prop="reportUpload" label-width='140px'>
-            <span slot="label">产品检测报告上传</span>
+            <span slot="label" class="input-label">产品检测报告上传</span>
               <el-button size="small" type="success" plain icon="el-icon-document-add" @click="handleProductReportUpload">点击上传</el-button>
           </el-form-item>
         </el-row>
@@ -108,8 +108,6 @@ export default {
       this.$refs.elForm.resetFields();
     },
     handleProductReportUpload() {
-      // debugger;
-      console.log('CLICKED');
       this.$refs.formFileUpload.$emit("open");
     }
   }
@@ -123,4 +121,7 @@ export default {
     font-weight: bold;
 }
 
+.input-label {
+  font-weight: bold;
+}
 </style>

@@ -270,9 +270,6 @@ export default {
 
 </script>
 <style>
-.el-upload__tip {
-  line-height: 1.2;
-}
 .card-title {
     text-align: left;
     font-weight: bold;

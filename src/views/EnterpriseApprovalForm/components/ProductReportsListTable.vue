@@ -1,13 +1,14 @@
 <template>
-  <div class="app-container">
-    <el-dialog title="产品检测报告上传" :modal="false" :visible.sync="isDialogTableVisible" :before-close="handleClose" >
+  <div class='dialog-container'>
+    <el-dialog title="产品检测报告上传" :modal="false" :visible.sync="isDialogTableVisible" :before-close="handleClose">
+      <div slot="title" class="dialog-header-title">产品检测报告上传</div>
       <!-- 产品报告列表Table -->
       <el-card class="box-card" shadow="never">
         <div slot="header" class="card-title">
           <span>已经上传的产品检测报告</span>
         </div>
         <el-table
-          :data="menuList"
+          :data="reportsList"
           row-key="id"
           stripe
           :default-sort = "{prop: 'create_time', order: 'descending'}"
@@ -32,27 +33,37 @@
             </template>
           </el-table-column>
         </el-table>
+        <pagination
+          v-show="total>0"
+          :total="total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="getRemoteUserList"
+        />
       </el-card>
-
       <!-- 产品报告上传Form -->
       <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="180px"
         label-position="right">
         <el-row type="flex" justify="start" align="right" :gutter="1" style="margin-left: 20%">
-          <el-form-item label="产品类型" prop="productType">
+          <el-form-item prop="productType">
+            <span slot="label" class="input-label">产品类型</span>
             <el-input v-model="formData.field105" placeholder="请输入产品类型" clearable :style="{width: '100%'}">
             </el-input>
           </el-form-item>
-          <el-form-item label="产品编号" prop="productNo">
+          <el-form-item prop="productNo">
+            <span slot="label" class="input-label">产品编号</span>
             <el-input v-model="formData.field107" placeholder="请输入产品编号" clearable :style="{width: '100%'}">
             </el-input>
           </el-form-item>
         </el-row>
         <el-row type="flex" justify="start" align="left" :gutter="1" style="margin-left: 20%">
-          <el-form-item label="产品名称" prop="productName">
+          <el-form-item prop="productName">
+            <span slot="label" class="input-label">产品名称</span>
             <el-input v-model="formData.field109" placeholder="请输入产品名称" clearable :style="{width: '100%'}">
             </el-input>
           </el-form-item>
-          <el-form-item label="产品检测报告" prop="productReport">
+          <el-form-item prop="productReport">
+            <span slot="label" class="input-label">产品检测报告</span>
             <el-upload
               class="upload-demo"
               action="https://jsonplaceholder.typicode.com/posts/"
@@ -78,7 +89,7 @@
 </template>
 
 <script>
-import { listUsers } from '@/api/enterprise/report';
+import { listUsers, listUsersWithParams } from '@/api/enterprise/report';
 
 export default {
   name: "Menu",
@@ -87,6 +98,16 @@ export default {
       isDialogTableVisible: false,
       isDisableDeleteReportBtn: true,
       multipleSelection: [],
+      // Table 数据源
+      reportsList: [],
+      // currentPage: 0,
+      // Table Pagination 总数
+      total: 0,
+      // Table Pagination 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10
+      },
       formData: {
         productType: undefined,
         productNo: undefined,
@@ -110,11 +131,6 @@ export default {
       visibleOptions: [],
       // 菜单状态数据字典
       statusOptions: [],
-      // 查询参数
-      queryParams: {
-        menuName: undefined,
-        visible: undefined
-      },
       // 表单参数
       form: {},
       // 表单校验
@@ -138,11 +154,10 @@ export default {
     };
   },
   created() {
+    this.getRemoteUserList();
     this.getUserList();
     // eslint-disable-next-line func-names
     this.$on('open', function () {
-      // debugger;
-      console.log('in Table');
       this.isDialogTableVisible = true;
     });
     // this.getList();
@@ -154,6 +169,12 @@ export default {
     // });
   },
   methods: {
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
     handleClose(done) {
       // this.isDialogTableVisible = true;
       this.$confirm('确认关闭？')
@@ -201,6 +222,14 @@ export default {
       this.loading = true;
       listUsers().then((response) => {
         this.menuList = response.data.data;
+        this.loading = false;
+      });
+    },
+    getRemoteUserList() {
+      this.loading = true;
+      listUsersWithParams(this.queryParams).then((response) => {
+        this.reportsList = response.data.data;
+        this.total = response.data.meta.total;
         this.loading = false;
       });
     },
@@ -286,10 +315,46 @@ export default {
 
 </script>
 <style>
+.dialog-header-title {
+  /* width: 100%;
+  height: 100%; */
+  background-color: #e3e3e3;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+}
+.box-card {
+  background-color: #e3e3e3;
 
+}
 .card-title {
     text-align: left;
     font-weight: bold;
 }
-
+.pagination-container {
+  margin-left: 5%;
+  margin-top: 1%;
+}
+.dialog-container {
+    display: flex;
+    justify-content: center;
+    align-items: Center;
+    overflow: hidden;
+    .el-dialog {
+        margin: 0 auto !important;
+        height: 90%;
+        overflow: hidden;
+        .el-dialog__body {
+            position: absolute;
+            left: 0;
+            top: 54px;
+            bottom: 0;
+            right: 0;
+            padding: 0;
+            z-index: 1;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+}
+}
 </style>
