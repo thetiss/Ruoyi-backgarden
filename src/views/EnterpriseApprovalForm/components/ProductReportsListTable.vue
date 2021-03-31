@@ -1,6 +1,6 @@
 <template>
-  <div class='dialog-container'>
-    <el-dialog title="产品检测报告上传" :modal="false" :visible.sync="isDialogTableVisible" :before-close="handleClose">
+  <div>
+    <el-dialog title="产品检测报告上传" :modal="false" :visible.sync="isDialogTableVisible" :before-close="handleClose" class='dialog-container'>
       <div slot="title" class="dialog-header-title">产品检测报告上传</div>
       <!-- 产品报告列表Table -->
       <el-card class="box-card" shadow="never">
@@ -33,57 +33,61 @@
             </template>
           </el-table-column>
         </el-table>
-        <pagination
-          v-show="total>0"
-          :total="total"
-          :page.sync="queryParams.pageNum"
-          :limit.sync="queryParams.pageSize"
-          @pagination="getRemoteUserList"
-        />
+        <div slot="footer">
+          <pagination
+            v-show="total>0"
+            :total="total"
+            :page.sync="queryParams.pageNum"
+            :limit.sync="queryParams.pageSize"
+            @pagination="getRemoteUserList"
+          />
+        </div>
       </el-card>
       <!-- 产品报告上传Form -->
-      <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="180px"
-        label-position="right">
-        <el-row type="flex" justify="start" align="right" :gutter="1" style="margin-left: 20%">
-          <el-form-item prop="productType">
-            <span slot="label" class="input-label">产品类型</span>
-            <el-input v-model="formData.field105" placeholder="请输入产品类型" clearable :style="{width: '100%'}">
-            </el-input>
+      <!-- <div slot="footer"> -->
+        <el-form  slot="footer" ref="elForm" :model="formData" :rules="rules" size="medium" label-width="180px"
+          label-position="right">
+          <el-row type="flex" justify="start" align="right" :gutter="1" style="margin-left: 20%">
+            <el-form-item prop="productType">
+              <span slot="label" class="input-label">产品类型</span>
+              <el-input v-model="formData.field105" placeholder="请输入产品类型" clearable :style="{width: '100%'}">
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="productNo">
+              <span slot="label" class="input-label">产品编号</span>
+              <el-input v-model="formData.field107" placeholder="请输入产品编号" clearable :style="{width: '100%'}">
+              </el-input>
+            </el-form-item>
+          </el-row>
+          <el-row type="flex" justify="start" align="left" :gutter="1" style="margin-left: 20%">
+            <el-form-item prop="productName">
+              <span slot="label" class="input-label">产品名称</span>
+              <el-input v-model="formData.field109" placeholder="请输入产品名称" clearable :style="{width: '100%'}">
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="productReport">
+              <span slot="label" class="input-label">产品检测报告</span>
+              <el-upload
+                class="upload-demo"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :before-remove="beforeRemove"
+                multiple
+                :limit="3"
+                :on-exceed="handleExceed"
+                :file-list="fileList" >
+                <el-button size="small" type="success" plain icon="el-icon-document-add">点击上传</el-button>
+                <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
+              </el-upload>
+            </el-form-item>
+          </el-row>
+          <el-form-item size="large">
+            <el-button type="primary" @click="submitForm" icon="el-icon-upload2">上传</el-button>
+            <el-button type="danger" :disabled='isDisableDeleteReportBtn' @click="resetForm" icon="el-icon-delete">删除</el-button>
           </el-form-item>
-          <el-form-item prop="productNo">
-            <span slot="label" class="input-label">产品编号</span>
-            <el-input v-model="formData.field107" placeholder="请输入产品编号" clearable :style="{width: '100%'}">
-            </el-input>
-          </el-form-item>
-        </el-row>
-        <el-row type="flex" justify="start" align="left" :gutter="1" style="margin-left: 20%">
-          <el-form-item prop="productName">
-            <span slot="label" class="input-label">产品名称</span>
-            <el-input v-model="formData.field109" placeholder="请输入产品名称" clearable :style="{width: '100%'}">
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="productReport">
-            <span slot="label" class="input-label">产品检测报告</span>
-            <el-upload
-              class="upload-demo"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :before-remove="beforeRemove"
-              multiple
-              :limit="3"
-              :on-exceed="handleExceed"
-              :file-list="fileList" >
-              <el-button size="small" type="success" plain icon="el-icon-document-add" style="margin-left: -100%">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-            </el-upload>
-          </el-form-item>
-        </el-row>
-        <el-form-item size="large">
-          <el-button type="primary" @click="submitForm" icon="el-icon-upload2">上传</el-button>
-          <el-button type="danger" :disabled='isDisableDeleteReportBtn' @click="resetForm" icon="el-icon-delete">删除</el-button>
-        </el-form-item>
-      </el-form>
+        </el-form>
+      <!-- </div> -->
     </el-dialog>
   </div>
 </template>
@@ -100,7 +104,6 @@ export default {
       multipleSelection: [],
       // Table 数据源
       reportsList: [],
-      // currentPage: 0,
       // Table Pagination 总数
       total: 0,
       // Table Pagination 查询参数
@@ -160,13 +163,6 @@ export default {
     this.$on('open', function () {
       this.isDialogTableVisible = true;
     });
-    // this.getList();
-    // this.getDicts("sys_show_hide").then((response) => {
-    //   this.visibleOptions = response.data;
-    // });
-    // this.getDicts("sys_normal_disable").then((response) => {
-    //   this.statusOptions = response.data;
-    // });
   },
   methods: {
     handleSizeChange(val) {
@@ -233,41 +229,6 @@ export default {
         this.loading = false;
       });
     },
-    /** 查询菜单列表 */
-    // getList() {
-    //   this.loading = true;
-    //   listMenu(this.queryParams).then((response) => {
-    //     this.menuList = this.handleTree(response.data, "menuId");
-    //     this.loading = false;
-    //   });
-    // },
-    /** 转换菜单数据结构 */
-    // normalizer(node) {
-    //   if (node.children && !node.children.length) {
-    //     // eslint-disable-next-line no-param-reassign
-    //     delete node.children;
-    //   }
-    //   return {
-    //     id: node.menuId,
-    //     label: node.menuName,
-    //     children: node.children
-    //   };
-    // },
-    /** 查询菜单下拉树结构 */
-    // 显示状态字典翻译
-    // visibleFormat(row, column) {
-    //   if (row.menuType === "F") {
-    //     return "";
-    //   }
-    //   return this.selectDictLabel(this.visibleOptions, row.visible);
-    // },
-    // 菜单状态字典翻译
-    // statusFormat(row, column) {
-    //   if (row.menuType === "F") {
-    //     return "";
-    //   }
-    //   return this.selectDictLabel(this.statusOptions, row.status);
-    // },
     // 取消按钮
     cancel() {
       this.open = false;
@@ -316,18 +277,12 @@ export default {
 </script>
 <style>
 .dialog-header-title {
-  /* width: 100%;
-  height: 100%; */
   background-color: #e3e3e3;
   font-size: 18px;
   font-weight: bold;
   text-align: left;
 }
-.box-card {
-  background-color: #e3e3e3;
-
-}
-.card-title {
+/* .card-title {
     text-align: left;
     font-weight: bold;
 }
@@ -340,21 +295,67 @@ export default {
     justify-content: center;
     align-items: Center;
     overflow: hidden;
-    .el-dialog {
-        margin: 0 auto !important;
-        height: 90%;
-        overflow: hidden;
-        .el-dialog__body {
-            position: absolute;
-            left: 0;
-            top: 54px;
-            bottom: 0;
-            right: 0;
-            padding: 0;
-            z-index: 1;
-            overflow: hidden;
-            overflow-y: auto;
-        }
+} */
+
+.dialog-container .el-dialog  {
+    margin: 0 auto !important;
+    height: 90%;
+    overflow: hidden;
 }
+.dialog-container .el-dialog .el-dialog__body {
+    height: 65%;
+    overflow: hidden;
+    overflow-y: auto;
 }
+.dialog-container .el-dialog .el-dialog__footer {
+    height: 30%;
+    /* bottom: 1px; */
+    justify-content: center;
+    align-items: Center;
+}
+
+/* .dialog-container .el-dialog .el-dialog__body .el-card {
+    overflow: hidden;
+}
+.dialog-container .el-dialog .el-dialog__body .el-card .el-table {
+    overflow: hidden;
+    overflow-y: auto;
+} */
+/*
+.dialog-container .el-dialog .el-dialog__body {
+    margin: 0 auto !important;
+    height: 100%;
+    overflow: hidden;
+}
+.dialog-container .el-dialog .el-dialog__body .el-card {
+    margin: 0 auto !important;
+    height: 70%;
+    overflow: hidden;
+}
+.dialog-container .el-dialog .el-dialog__body .el-card .el-table {
+    position: absolute;
+    left: 0;
+    top: 54px;
+    right: 0;
+    height: 90%;
+    z-index: 1;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.dialog-container .el-dialog .el-dialog__body .el-card .pagination {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 10%;
+    z-index: 1;
+}
+
+.dialog-container .el-dialog .el-dialog__body .el-form {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 30%;
+    z-index: 1;
+} */
 </style>

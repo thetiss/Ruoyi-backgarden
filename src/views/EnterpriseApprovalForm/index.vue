@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       combinedFormData: {},
-      activeTabIndex: 0
+      activeTabIndex: 1
     };
   },
   methods: {

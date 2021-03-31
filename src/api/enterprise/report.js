@@ -13,7 +13,7 @@ export function listUsersWithParams(queryParams) {
     page: queryParams.pageNum,
     per_page: queryParams.pageSize
   };
-  debugger;
+  // debugger;
   return request({
     url: '/',
     method: 'get',
