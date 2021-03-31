@@ -36,7 +36,7 @@
               <el-button size="small" type="success" plain icon="el-icon-document-add" @click="handleProductReportUpload">点击上传</el-button>
           </el-form-item>
         </el-row>
-        <product-reports-list-table ref="form"></product-reports-list-table>
+        <product-reports-list-table ref="formFileUpload"></product-reports-list-table>
      </el-form>
   </div>
 </template>
@@ -65,10 +65,8 @@ export default {
           message: '企业规模不能为空',
           trigger: 'change'
         }],
-        // createdTime: [],
-        // registeredCapital: [],
         businessScope: [{
-          required: false,
+          required: true,
           message: '请输入经营范围',
           trigger: 'blur'
         }]
@@ -110,16 +108,16 @@ export default {
       this.$refs.elForm.resetFields();
     },
     handleProductReportUpload() {
-      this.$refs.form.$emit("open");
+      // debugger;
+      console.log('CLICKED');
+      this.$refs.formFileUpload.$emit("open");
     }
   }
 };
 
 </script>
 <style>
-.el-upload__tip {
-  line-height: 1.2;
-}
+
 .card-title {
     text-align: left;
     font-weight: bold;

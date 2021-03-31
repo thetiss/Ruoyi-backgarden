@@ -141,6 +141,8 @@ export default {
     this.getUserList();
     // eslint-disable-next-line func-names
     this.$on('open', function () {
+      // debugger;
+      console.log('in Table');
       this.isDialogTableVisible = true;
     });
     // this.getList();
