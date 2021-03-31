@@ -33,7 +33,6 @@
             </template>
           </el-table-column>
         </el-table>
-        <div slot="footer">
           <pagination
             v-show="total>0"
             :total="total"
@@ -41,13 +40,12 @@
             :limit.sync="queryParams.pageSize"
             @pagination="getRemoteUserList"
           />
-        </div>
       </el-card>
       <!-- 产品报告上传Form -->
       <!-- <div slot="footer"> -->
         <el-form  slot="footer" ref="elForm" :model="formData" :rules="rules" size="medium" label-width="180px"
           label-position="right">
-          <el-row type="flex" justify="start" align="right" :gutter="1" style="margin-left: 20%">
+          <el-row type="flex" justify="start" align="right" :gutter="1">
             <el-form-item prop="productType">
               <span slot="label" class="input-label">产品类型</span>
               <el-input v-model="formData.field105" placeholder="请输入产品类型" clearable :style="{width: '100%'}">
@@ -59,7 +57,7 @@
               </el-input>
             </el-form-item>
           </el-row>
-          <el-row type="flex" justify="start" align="left" :gutter="1" style="margin-left: 20%">
+          <el-row type="flex" justify="start" align="left" :gutter="1">
             <el-form-item prop="productName">
               <span slot="label" class="input-label">产品名称</span>
               <el-input v-model="formData.field109" placeholder="请输入产品名称" clearable :style="{width: '100%'}">
@@ -275,7 +273,8 @@ export default {
 };
 
 </script>
-<style>
+<style >
+
 .dialog-header-title {
   background-color: #e3e3e3;
   font-size: 18px;
@@ -307,11 +306,15 @@ export default {
     overflow: hidden;
     overflow-y: auto;
 }
+
 .dialog-container .el-dialog .el-dialog__footer {
     height: 30%;
-    /* bottom: 1px; */
     justify-content: center;
     align-items: Center;
+}
+
+.dialog-container .el-dialog .el-dialog__footer .el-row {
+  left: -8%;
 }
 
 /* .dialog-container .el-dialog .el-dialog__body .el-card {
