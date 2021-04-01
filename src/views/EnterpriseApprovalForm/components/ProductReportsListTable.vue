@@ -42,7 +42,6 @@
           />
       </el-card>
       <!-- 产品报告上传Form -->
-      <!-- <div slot="footer"> -->
         <el-form  slot="footer" ref="elForm" :model="formData" :rules="rules" size="medium" label-width="180px"
           label-position="right">
           <el-row type="flex" justify="start" align="right" :gutter="1">
@@ -85,7 +84,6 @@
             <el-button type="danger" :disabled='isDisableDeleteReportBtn' @click="resetForm" icon="el-icon-delete">删除</el-button>
           </el-form-item>
         </el-form>
-      <!-- </div> -->
     </el-dialog>
   </div>
 </template>
@@ -281,21 +279,8 @@ export default {
   font-weight: bold;
   text-align: left;
 }
-/* .card-title {
-    text-align: left;
-    font-weight: bold;
-}
-.pagination-container {
-  margin-left: 5%;
-  margin-top: 1%;
-}
-.dialog-container {
-    display: flex;
-    justify-content: center;
-    align-items: Center;
-    overflow: hidden;
-} */
 
+/* dialog card table 获取页面滚动条，card里有 table和pagination */
 .dialog-container .el-dialog  {
     margin: 0 auto !important;
     height: 90%;
@@ -304,19 +289,33 @@ export default {
 .dialog-container .el-dialog .el-dialog__body {
     height: 65%;
     overflow: hidden;
-    overflow-y: auto;
 }
 
+.dialog-container .el-dialog .el-dialog__body .el-card {
+            height: 95%;
+            overflow: hidden;
+}
+.dialog-container .el-dialog .el-dialog__body .el-card .el-card__body {
+            height: 80%;
+            overflow: hidden;
+}
+.dialog-container .el-dialog .el-dialog__body .el-card .el-card__body .el-table {
+            height: 80%;
+            overflow: hidden;
+            overflow-y: auto;
+}
+
+/* dialog form container 高度 */
 .dialog-container .el-dialog .el-dialog__footer {
     height: 30%;
     justify-content: center;
     align-items: Center;
 }
 
+/* dialog form row 左边距 */
 .dialog-container .el-dialog .el-dialog__footer .el-row {
   left: -8%;
 }
-
 /* .dialog-container .el-dialog .el-dialog__body .el-card {
     overflow: hidden;
 }
