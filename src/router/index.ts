@@ -4,6 +4,8 @@ import Home from '../views/Home.vue';
 import EnterpriseApproval from "../views/EnterpriseApproval/index.vue";
 import EnterpriseApprovalForm from '../views/EnterpriseApprovalForm/index.vue';
 import TestTable from '../views/EnterpriseApprovalForm/components/ProductReportsListTable.vue';
+import MapView from '../views/Map/index.vue';
+import Approve from '../views/Approve/index.vue';
 
 Vue.use(VueRouter);
 
@@ -35,6 +37,16 @@ const routes: Array<RouteConfig> = [
     path: '/TestTable',
     name: 'TestTable',
     component: TestTable
+  },
+  {
+    path: '/map',
+    name: 'MapView',
+    component: MapView
+  },
+  {
+    path: '/approve',
+    name: 'Approve',
+    component: Approve
   }
 ];
 
