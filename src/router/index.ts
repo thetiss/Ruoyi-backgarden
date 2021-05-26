@@ -6,6 +6,7 @@ import EnterpriseApprovalForm from '../views/EnterpriseApprovalForm/index.vue';
 import TestTable from '../views/EnterpriseApprovalForm/components/ProductReportsListTable.vue';
 import MapView from '../views/Map/index.vue';
 import Approve from '../views/Approve/index.vue';
+import WorkFlow from '../views/WorkFlow/index.vue';
 
 Vue.use(VueRouter);
 
@@ -47,6 +48,11 @@ const routes: Array<RouteConfig> = [
     path: '/approve',
     name: 'Approve',
     component: Approve
+  },
+  {
+    path: '/work-flow',
+    name: 'WorkFlow',
+    component: WorkFlow
   }
 ];
 
