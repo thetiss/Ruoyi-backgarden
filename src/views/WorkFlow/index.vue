@@ -13,15 +13,43 @@ export default {
     };
   },
   created() {
-    this.getQuick();
-    this.watchPromiseTutorial()
-      .then((msg) => {
-        console.log(2, msg);
-      }).catch((err) => {
-        console.log(2, err);
-      });
+    // this.getQuick();
+    // this.watchPromiseTutorial()
+    //   .then((msg) => {
+    //     console.log(2, msg);
+    //   }).catch((err) => {
+    //     console.log(2, err);
+    //   });
+    // this.getImg();
+    this.getAsyncVSsync();
   },
   methods: {
+    getAsyncVSsync() {
+      console.log(1);
+      setTimeout(() => {
+        console.log(3);
+      }, 5000);
+      console.log(2);
+    },
+    getImg() {
+      async function fetchImg() {
+        const res = await fetch('coffee.jpg');
+        if (!res.ok) {
+          throw new Error(`Http Error, ${res.status}`);
+        } else {
+          return res.blob();
+        }
+      }
+      fetchImg()
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          const image = document.createElement('img');
+          image.src = url;
+          document.body.appendChild(image);
+        }).catch((err) => {
+          console.log('Error', err);
+        });
+    },
     // 快速了解Promise resole,reject; .then() .then().catch()
     getQuick() {
       const p = new Promise((resolve, reject) => {
