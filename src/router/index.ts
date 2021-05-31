@@ -7,6 +7,7 @@ import TestTable from '../views/EnterpriseApprovalForm/components/ProductReports
 import MapView from '../views/Map/index.vue';
 import Approve from '../views/Approve/index.vue';
 import WorkFlow from '../views/WorkFlow/index.vue';
+import RegularReport from '../views/RegularReport/index.vue';
 
 Vue.use(VueRouter);
 
@@ -53,6 +54,11 @@ const routes: Array<RouteConfig> = [
     path: '/work-flow',
     name: 'WorkFlow',
     component: WorkFlow
+  },
+  {
+    path: '/report',
+    name: 'RegularReport',
+    component: RegularReport
   }
 ];
 
