@@ -4,6 +4,18 @@
 
 ## vue-antd-ruoyi-cloud-backgarden(熟悉 ruoyi 现成框架 demo)
 
+# JavaScript
+
+## `Error handling`
+
+- ❌[window.location Cheatsheet](https://www.valentinog.com/blog/error/#error-handling-with-promise)
+
+# DOM
+
+## `window.location`
+
+- ❌[window.location Cheatsheet](https://dev.to/samanthaming/window-location-cheatsheet-4edl)
+
 # ⚠️ Promise
 
 ## 异步/同步
@@ -16,19 +28,20 @@
 
 ## 布局
 
-- [flex 基础入门](https://css-tricks.com/snippets/css/a-guide-to-flexbox/#top-of-site)
-  《CSS3 入门》
-- [grid 基础入门](https://css-tricks.com/snippets/css/a-guide-to-flexbox/#top-of-site)
+- ❌[A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/#top-of-site)
+  ✅[三分钟学会 css3 中的 flexbox 布局](https://www.webhek.com/post/css-flexbox-layout.html)
+  📋CSS3 入门.md
+- ❌[CSS Grid: illustrated introduction](https://dev.to/mustapha/css-grid-illustrated-introduction-52l5)
 
 ## ❌wechat : 一行 css……(code)
 
 # http
 
-## 👌wechat: http 方法(read)
+## ✅wechat: http 方法(read)
 
 # readme
 
-## `👌 done, ❌ unfinished/not start, ⚠️ some questions`
+## `👌/✅/💯 done, ❌ unfinished/not start, ⚠️ some questions, 📋 md`
 
 # share blogs
 
