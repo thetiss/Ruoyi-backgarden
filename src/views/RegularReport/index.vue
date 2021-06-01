@@ -1,6 +1,7 @@
 <template>
   <div class="gutter-example">
-    <a-row><json-tree /></a-row>
+    <a-row><create-form /></a-row>
+    <!-- <a-row><json-tree /></a-row> -->
     <!-- <a-row><search-form /></a-row> -->
     <!-- <a-row :gutter="16">
       <a-col class="gutter-row" :span="8">
@@ -25,13 +26,15 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import JsonTree from './modules/JsonTree.vue';
+import CreateForm from './modules/CreateForm.vue';
+// import JsonTree from './modules/JsonTree.vue';
 // import SearchForm from './modules/SearchForm.vue';
 
 export default Vue.extend({
   components: {
+    CreateForm
     // SearchForm,
-    JsonTree
+    // JsonTree
   }
 });
 </script>

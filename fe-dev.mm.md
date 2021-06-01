@@ -8,7 +8,7 @@
 
 ## `Error handling`
 
-- ❌[window.location Cheatsheet](https://www.valentinog.com/blog/error/#error-handling-with-promise)
+- ❌[promise error ](https://www.valentinog.com/blog/error/#error-handling-with-promise)
 
 # DOM
 
@@ -16,13 +16,19 @@
 
 - ❌[window.location Cheatsheet](https://dev.to/samanthaming/window-location-cheatsheet-4edl)
 
-# ⚠️ Promise
+# ES6
 
-## 异步/同步
+## ⚠️ Arrow Func
 
-## .then()　
+### ⚠️[ 5 diffs between Arrow and Regular](https://dmitripavlutin.com/differences-between-arrow-and-regular-functions/)
 
-## .catch()
+## ⚠️ Promise
+
+### 异步/同步
+
+### .then()　
+
+### .catch()
 
 # css3
 
