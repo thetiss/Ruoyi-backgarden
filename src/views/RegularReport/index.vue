@@ -1,6 +1,6 @@
 <template>
   <div class="gutter-example">
-    <a-row><create-form /></a-row>
+    <a-row><five-diffs-in-arrow-func /></a-row>
     <!-- <a-row><json-tree /></a-row> -->
     <!-- <a-row><search-form /></a-row> -->
     <!-- <a-row :gutter="16">
@@ -26,13 +26,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import CreateForm from './modules/CreateForm.vue';
+import FiveDiffsInArrowFunc from './modules/FiveDiffsInArrowFunc.vue';
 // import JsonTree from './modules/JsonTree.vue';
 // import SearchForm from './modules/SearchForm.vue';
 
 export default Vue.extend({
   components: {
-    CreateForm
+    FiveDiffsInArrowFunc
     // SearchForm,
     // JsonTree
   }

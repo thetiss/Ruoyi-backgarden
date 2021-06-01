@@ -1,5 +1,9 @@
 # roadmap
 
+## v.1.0.2
+
+![image-20210601101031735](file://C:\Users\chenh\AppData\Roaming\Typora\typora-user-images\image-20210601101031735.png?lastModify=1622513763)
+
 ## v.1.0.1
 
 ![image-20210531174056426](C:\Users\chenh\AppData\Roaming\Typora\typora-user-images\image-20210531174056426.png)
