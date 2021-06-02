@@ -123,6 +123,8 @@ export default Vue.extend({
       const timePassedBy = autoMinusBy1(29);
       console.log(1, 'return regular', goodsItemCategories);
       console.log(1, 'return =>', timePassedBy);
+      console.log(1, 'return => name', ((number) => number + 1).name);
+      console.log(1, 'return => name', autoMinusBy1.name);
     },
     getArgsInFunction() {
       // regular with args
@@ -131,8 +133,8 @@ export default Vue.extend({
       }
       goods(['banana', 'apple']); // log ['banana', 'apple']
       // outer with args, but arrow without args
-      function store(params) {
-        const getStoreSellout = () => {
+      function store(params) { // the outer function
+        const getStoreSellout = () => { // no arguments special keyword is defined inside an arrow function.
           console.log(1, 'params arrow, using outer params', params); // log ['c', 'd']
         };
         getStoreSellout(['a', 'b']);

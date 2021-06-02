@@ -1,5 +1,15 @@
 # roadmap
 
+## v.1.0.3
+
+[Learn Z-Index Using a Visualization Tool](https://thirumanikandan.com/posts/learn-z-index-using-a-visualization-tool)
+
+![image-20210602185200886](C:\Users\chenh\AppData\Roaming\Typora\typora-user-images\image-20210602185200886.png)
+
+`Styling numbered lists with CSS counters`
+
+![image-20210602160141431](C:\Users\chenh\AppData\Roaming\Typora\typora-user-images\image-20210602160141431.png)
+
 ## v.1.0.2
 
 ![image-20210601101031735](file://C:\Users\chenh\AppData\Roaming\Typora\typora-user-images\image-20210601101031735.png?lastModify=1622513763)
